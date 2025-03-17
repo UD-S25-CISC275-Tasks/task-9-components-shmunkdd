@@ -11,21 +11,17 @@ const PEOPLE = [
 ];
 
 export function ChooseTeam(): React.JSX.Element {
-    const [allOptions, setAllOptions] = useState<string[]>(PEOPLE);
     const [team, setTeam] = useState<string[]>([]);
 
-    function chooseMember() {
-        /*
-        if (!team.includes(newMember)) {
-            team.push(newMember);
-        }
-        */
+    function chooseMember(person: string) {
+        const addPerson = `Add ${person}`;
+        setTeam((prevTeam) =>
+            prevTeam.includes(addPerson) ? prevTeam : [...prevTeam, addPerson],
+        );
     }
 
     function clearTeam() {
-        /*
-        team = [];
-        */
+        setTeam([]); // Properly reset the state
     }
 
     return (
@@ -33,20 +29,26 @@ export function ChooseTeam(): React.JSX.Element {
             <h3>Choose Team</h3>
             <Row>
                 <Col>
-                    {allOptions.map((option: string) => (
+                    {PEOPLE.map((option: string) => (
                         <div key={option} style={{ marginBottom: "4px" }}>
-                            Add{" "}
-                            <Button onClick={chooseMember} size="sm">
-                                {option}
+                            <Button
+                                onClick={() => {
+                                    chooseMember(option);
+                                }}
+                                size="sm"
+                            >
+                                Add {option}
                             </Button>
                         </div>
                     ))}
                 </Col>
                 <Col>
                     <strong>Team:</strong>
-                    {team.map((member: string) => (
-                        <li key={member}>{member}</li>
-                    ))}
+                    <ul>
+                        {team.map((member: string) => (
+                            <li key={member}>{member}</li>
+                        ))}
+                    </ul>
                     <Button onClick={clearTeam}>Clear Team</Button>
                 </Col>
             </Row>
